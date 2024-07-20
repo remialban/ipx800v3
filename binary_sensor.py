@@ -25,8 +25,12 @@ class BinarySensor(CoordinatorEntity, BinarySensorEntity):
 
     @callback
     def _handle_coordinator_update(self) -> None:
-        self._attr_is_on = self.coordinator.data[self._pin - 1]
-        self.async_write_ha_state()
+        try:
+            if self.coordinator.data[self._pin - 1] is not None:
+                self._attr_is_on = self.coordinator.data[self._pin - 1]
+                self.async_write_ha_state()
+        except:
+            pass
 
     def set_state(self, state: bool):
         self._attr_is_on = state

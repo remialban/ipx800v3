@@ -30,8 +30,12 @@ class Switch(CoordinatorEntity, SwitchEntity):
     @callback
     def _handle_coordinator_update(self) -> None:
         """Handle updated data from the coordinator."""
-        self._attr_is_on = self.coordinator.data[self._pin - 1]
-        self.async_write_ha_state()
+        try:
+            if self.coordinator.data[self._pin - 1] is not None:
+                self._attr_is_on = self.coordinator.data[self._pin - 1]
+                self.async_write_ha_state()
+        except:
+            pass
 
     async def async_turn_on(self, **kwargs: Any):
         await self._api.call_api("preset.htm?led" + str(self._pin) + "=1")

@@ -14,9 +14,9 @@ from .const import DOMAIN
 
 
 class IPX800v3:
-    DIGITAL_INPUT_NUMBERS = 8
-    OUTPUT_NUMBERS = 8
-    ANALOG_INPUT_NUMBERS = 6
+    DIGITAL_INPUT_NUMBERS = 32
+    OUTPUT_NUMBERS = 32
+    ANALOG_INPUT_NUMBERS = 16
 
     def __init__(self, hass: HomeAssistant, host: str, username: str|None, password: str|None, mac: str|None, firmware_version: str|None):
         self._hass = hass

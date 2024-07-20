@@ -38,9 +38,13 @@ class SwitchCoordinator(DataUpdateCoordinator):
         response: Response = await self._api.call_api("api/xdevices.json?cmd=20")
         data = response.json()
 
-        values: list[int] = []
-        for i in range(1, 9):
-            values.append(int(data["OUT" + str(i)]))
+        values: list[int | None] = []
+        for i in range(1, 33):
+            key = "OUT" + str(i)
+            if key in data.keys():
+                values.append(int(data["OUT" + str(i)]))
+            else:
+                values.append(None)
 
         return values
 
@@ -60,8 +64,12 @@ class BinarySensorCoordinator(DataUpdateCoordinator):
         response: Response = await self._api.call_api("api/xdevices.json?cmd=10")
         data = response.json()
 
-        values: list[bool] = []
-        for i in range(1, 9):
-            values.append(int(data["IN" + str(i)]) == 1)
+        values: list[bool | None] = []
+        for i in range(1, 33):
+            key = "IN" + str(i)
+            if key in data.keys():
+                values.append(int(data[key]) == 1)
+            else:
+                values.append(None)
 
         return values
