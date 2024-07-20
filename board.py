@@ -1,25 +1,28 @@
 import base64
 
+from aiohttp import web
+
 from homeassistant.components.http import HomeAssistantRequest
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.http import HomeAssistantView
 from .api import Api
 from .binary_sensor import BinarySensor
+from .const import DOMAIN, NUMBER_OF_COUNTERS, NUMBER_OF_DIGITAL_INPUTS, NUMBER_OF_RELAYS, \
+    NUMBER_OF_ANALOG_INPUTS
 from .coordinator import SwitchCoordinator, SensorCoordinator, BinarySensorCoordinator, CounterCoordinator
 from .sensor import Sensor, Counter
 from .switch import Switch
-from homeassistant.core import HomeAssistant
-from homeassistant.helpers.device_registry import DeviceInfo, format_mac
-from aiohttp import web
-from .const import DOMAIN
 
 
 class IPX800v3:
-    DIGITAL_INPUT_NUMBERS = 32
-    OUTPUT_NUMBERS = 32
-    ANALOG_INPUT_NUMBERS = 16
-    COUNTER_NUMBERS = 8
-
-    def __init__(self, hass: HomeAssistant, host: str, username: str|None, password: str|None, mac: str|None, firmware_version: str|None):
+    def __init__(
+            self,
+            hass: HomeAssistant,
+            host: str, username: str|None,
+            password: str|None, mac: str|None,
+            firmware_version: str|None
+    ):
         self._hass = hass
         self._host = host
         self._username = username
@@ -38,17 +41,21 @@ class IPX800v3:
             }
         )
 
-        self._api = Api(self._host, self._username, self._password)
+        self._api = Api(
+            host=self._host,
+            username=self._username,
+            password=self._password
+        )
 
         self._switch_coordinator = SwitchCoordinator(self._hass, self._api)
         self._sensor_coordinator = SensorCoordinator(self._hass, self._api)
         self._binary_sensor_coordinator = BinarySensorCoordinator(self._hass, self._api)
         self._counter_coordinator = CounterCoordinator(self._hass, self._api)
 
-        self._binary_sensors = [BinarySensor(self._binary_sensor_coordinator, i, self._device) for i in range(1, self.DIGITAL_INPUT_NUMBERS + 1)]
-        self._counters = [Counter(self._counter_coordinator, i, self._device) for i in range(1, self.COUNTER_NUMBERS + 1)]
-        self._switches = [Switch(self._switch_coordinator, i, self._device, self._api) for i in range(1, self.OUTPUT_NUMBERS + 1)]
-        self._sensors = [Sensor(self._sensor_coordinator, i, self._device) for i in range(1, self.ANALOG_INPUT_NUMBERS + 1)]
+        self._binary_sensors = [BinarySensor(self._binary_sensor_coordinator, i, self._device) for i in range(1, NUMBER_OF_DIGITAL_INPUTS + 1)]
+        self._counters = [Counter(self._counter_coordinator, i, self._device) for i in range(1, NUMBER_OF_COUNTERS + 1)]
+        self._switches = [Switch(self._switch_coordinator, i, self._device, self._api) for i in range(1, NUMBER_OF_RELAYS + 1)]
+        self._sensors = [Sensor(self._sensor_coordinator, i, self._device) for i in range(1, NUMBER_OF_ANALOG_INPUTS + 1)]
 
     async def run_coordinators(self):
         await self._switch_coordinator.async_config_entry_first_refresh()
@@ -105,11 +112,11 @@ def check_url(board: IPX800v3, type: str, id: str, state: str) -> bool:
     if state in ["relay", "digital_input"] and state not in [0, 1]:
         return False
 
-    if type == "relay" and id > board.OUTPUT_NUMBERS:
+    if type == "relay" and id > NUMBER_OF_RELAYS:
         return False
-    if type == "digital_input" and id > board.DIGITAL_INPUT_NUMBERS:
+    if type == "digital_input" and id > NUMBER_OF_DIGITAL_INPUTS:
         return False
-    if type == "analog_input" and id > board.ANALOG_INPUT_NUMBERS:
+    if type == "analog_input" and id > NUMBER_OF_ANALOG_INPUTS:
         return False
     return True
 

@@ -5,6 +5,8 @@ import logging
 from .api import Api
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, _DataT
+from .const import NUMBER_OF_ANALOG_INPUTS, NUMBER_OF_RELAYS, NUMBER_OF_DIGITAL_INPUTS, \
+    NUMBER_OF_COUNTERS
 
 
 class SensorCoordinator(DataUpdateCoordinator):
@@ -23,7 +25,7 @@ class SensorCoordinator(DataUpdateCoordinator):
         data = response.json()
 
         values: list[int | None] = []
-        for i in range(1, 17):
+        for i in range(1, NUMBER_OF_ANALOG_INPUTS + 1):
             key = "AN" + str(i)
             if key in data.keys():
                 values.append(int(data[key]))
@@ -49,7 +51,7 @@ class SwitchCoordinator(DataUpdateCoordinator):
         data = response.json()
 
         values: list[bool | None] = []
-        for i in range(1, 33):
+        for i in range(1, NUMBER_OF_RELAYS + 1):
             key = "OUT" + str(i)
             if key in data.keys():
                 values.append(int(data[key]) == 1)
@@ -75,7 +77,7 @@ class BinarySensorCoordinator(DataUpdateCoordinator):
         data = response.json()
 
         values: list[bool | None] = []
-        for i in range(1, 33):
+        for i in range(1, NUMBER_OF_DIGITAL_INPUTS + 1):
             key = "IN" + str(i)
             if key in data.keys():
                 values.append(int(data[key]) == 1)
@@ -101,7 +103,7 @@ class CounterCoordinator(DataUpdateCoordinator):
         data = response.json()
 
         values: list[int | None] = []
-        for i in range(1, 9):
+        for i in range(1, NUMBER_OF_COUNTERS + 1):
             key = "C" + str(i)
             if key in data.keys():
                 values.append(int(data[key]))
