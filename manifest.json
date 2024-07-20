@@ -1,0 +1,10 @@
+{
+  "domain": "ipx800v3",
+  "name": "IPX800v3",
+  "version": "1.0",
+  "codeowners": ["@remialban"],
+  "integration_type": "hub",
+  "documentation": "https://github.com/remialban/ipx800v3",
+  "iot_class": "local_polling",
+  "config_flow": true
+}

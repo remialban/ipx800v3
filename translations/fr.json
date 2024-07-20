@@ -1,0 +1,25 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Ajouter un appareil",
+        "data": {
+          "host": "Nom d'hôte ou adresse IP",
+          "username": "Nom d'utilisateur",
+          "password": "Mot de passe"
+        },
+        "error": {
+          "abc": "Il y a une erreur !!!!!!"
+        }
+      }
+    },
+    "abort": {
+      "connection_impossible": "Impossible de communiquer avec l'IPX800v3. Vérifiez que la carte est bien allumée et que les informations sont correctes"
+    }
+  },
+  "exceptions": {
+    "cannot_connect": {
+      "message": "Impossible de se conencter à {host}"
+    }
+  }
+}

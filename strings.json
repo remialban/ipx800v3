@@ -1,0 +1,22 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Add a device",
+        "data": {
+          "host": "Host or IP address",
+          "username": "Username",
+          "password": "Password"
+        }
+      }
+    },
+    "abort": {
+      "connection_impossible": "Impossible de communiquer"
+    }
+  },
+  "exceptions": {
+    "cannot_connect": {
+      "message": "Impossible de se conencter à sss"
+    }
+  }
+}
