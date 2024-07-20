@@ -4,7 +4,6 @@ from homeassistant.core import HomeAssistant
 
 from .const import DOMAIN
 from .board import IPX800v3, IPX800v3View
-from .device import Device
 
 
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
