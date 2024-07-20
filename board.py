@@ -18,7 +18,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class IPX800v3:
-    DIGITAL_INPUT_NUMBERS = 9
+    DIGITAL_INPUT_NUMBERS = 8
     OUTPUT_NUMBERS = 8
     ANALOG_INPUT_NUMBERS = 6
 
