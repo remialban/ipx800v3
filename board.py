@@ -9,7 +9,6 @@ from .sensor import Sensor
 from .switch import Switch
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo, format_mac
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from aiohttp import web
 from .const import DOMAIN
 

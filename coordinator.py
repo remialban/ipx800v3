@@ -3,11 +3,12 @@ from datetime import timedelta
 
 from httpx import Response
 
-from config.custom_components.ipx800v3.api import Api
+from .api import Api
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, _DataT
 
 _LOGGER = logging.getLogger(__name__)
+
 
 class SensorCoordinator(DataUpdateCoordinator):
     def __init__(self, hass: HomeAssistant, api: Api):

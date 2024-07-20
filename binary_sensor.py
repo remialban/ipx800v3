@@ -9,7 +9,7 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity, DataUpda
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback):
     from .board import IPX800v3
 
-    from config.custom_components.ipx800v3 import DOMAIN
+    from .const import DOMAIN
     board: IPX800v3 = hass.data[DOMAIN][entry.entry_id]
 
     async_add_entities([binary_sensor for binary_sensor in board.get_binary_sensors()])
