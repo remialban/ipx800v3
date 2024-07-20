@@ -20,7 +20,17 @@ class SensorCoordinator(DataUpdateCoordinator):
 
     async def _async_update_data(self):
         response: Response = await self._api.call_api("api/xdevices.json?cmd=30")
-        return response.json()
+        data = response.json()
+
+        values: list[int | None] = []
+        for i in range(1, 17):
+            key = "AN" + str(i)
+            if key in data.keys():
+                values.append(int(data[key]))
+            else:
+                values.append(None)
+
+        return values
 
 
 class SwitchCoordinator(DataUpdateCoordinator):
@@ -38,11 +48,11 @@ class SwitchCoordinator(DataUpdateCoordinator):
         response: Response = await self._api.call_api("api/xdevices.json?cmd=20")
         data = response.json()
 
-        values: list[int | None] = []
+        values: list[bool | None] = []
         for i in range(1, 33):
             key = "OUT" + str(i)
             if key in data.keys():
-                values.append(int(data["OUT" + str(i)]))
+                values.append(int(data[key]) == 1)
             else:
                 values.append(None)
 
