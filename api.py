@@ -12,4 +12,4 @@ class Api:
         auth = httpx.BasicAuth(username=self._username, password=self._password)
 
         async with httpx.AsyncClient() as client:
-            return await client.get("http://" + "192.168.0.3" + "/" + path)
+            return await client.get("http://" + self._host + "/" + path)
