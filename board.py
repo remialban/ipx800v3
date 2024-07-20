@@ -12,10 +12,6 @@ from homeassistant.helpers.device_registry import DeviceInfo, format_mac
 from aiohttp import web
 from .const import DOMAIN
 
-import logging
-
-_LOGGER = logging.getLogger(__name__)
-
 
 class IPX800v3:
     DIGITAL_INPUT_NUMBERS = 8
@@ -51,13 +47,10 @@ class IPX800v3:
         self._switches = [Switch(self._switch_coordinator, i, self._device, self._api) for i in range(1, self.OUTPUT_NUMBERS + 1)]
         self._sensors = [Sensor(i, self._device) for i in range(1, self.ANALOG_INPUT_NUMBERS + 1)]
 
-
     async def run_coordinators(self):
         await self._switch_coordinator.async_config_entry_first_refresh()
         await self._sensor_coordinator.async_config_entry_first_refresh()
         await self._binary_sensor_coordinator.async_config_entry_first_refresh()
-
-        #await self._switch_coordinator.async_refresh()
 
     def get_switches(self) -> list[Switch]:
         return self._switches

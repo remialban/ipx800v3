@@ -1,13 +1,10 @@
-import logging
 from datetime import timedelta
-
 from httpx import Response
+import logging
 
 from .api import Api
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, _DataT
-
-_LOGGER = logging.getLogger(__name__)
 
 
 class SensorCoordinator(DataUpdateCoordinator):
@@ -44,7 +41,7 @@ class SwitchCoordinator(DataUpdateCoordinator):
         values: list[int] = []
         for i in range(1, 9):
             values.append(int(data["OUT" + str(i)]))
-        _LOGGER.warning(values)
+
         return values
 
 

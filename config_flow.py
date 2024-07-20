@@ -1,5 +1,4 @@
 import base64
-import logging
 from typing import Any
 import xml.etree.ElementTree as ET
 
