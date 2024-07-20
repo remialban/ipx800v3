@@ -83,3 +83,29 @@ class BinarySensorCoordinator(DataUpdateCoordinator):
                 values.append(None)
 
         return values
+
+
+class CounterCoordinator(DataUpdateCoordinator):
+    def __init__(self, hass: HomeAssistant, api: Api):
+        super().__init__(
+            hass=hass,
+            logger=logging.getLogger(__name__),
+            name="Sensor coordinator",
+            update_interval=timedelta(seconds=10),
+            always_update=True
+        )
+        self._api = api
+
+    async def _async_update_data(self):
+        response: Response = await self._api.call_api("api/xdevices.json?cmd=40")
+        data = response.json()
+
+        values: list[int | None] = []
+        for i in range(1, 9):
+            key = "C" + str(i)
+            if key in data.keys():
+                values.append(int(data[key]))
+            else:
+                values.append(None)
+
+        return values

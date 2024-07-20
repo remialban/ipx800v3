@@ -4,8 +4,8 @@ from homeassistant.components.http import HomeAssistantRequest
 from homeassistant.helpers.http import HomeAssistantView
 from .api import Api
 from .binary_sensor import BinarySensor
-from .coordinator import SwitchCoordinator, SensorCoordinator, BinarySensorCoordinator
-from .sensor import Sensor
+from .coordinator import SwitchCoordinator, SensorCoordinator, BinarySensorCoordinator, CounterCoordinator
+from .sensor import Sensor, Counter
 from .switch import Switch
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo, format_mac
@@ -17,6 +17,7 @@ class IPX800v3:
     DIGITAL_INPUT_NUMBERS = 32
     OUTPUT_NUMBERS = 32
     ANALOG_INPUT_NUMBERS = 16
+    COUNTER_NUMBERS = 8
 
     def __init__(self, hass: HomeAssistant, host: str, username: str|None, password: str|None, mac: str|None, firmware_version: str|None):
         self._hass = hass
@@ -42,8 +43,10 @@ class IPX800v3:
         self._switch_coordinator = SwitchCoordinator(self._hass, self._api)
         self._sensor_coordinator = SensorCoordinator(self._hass, self._api)
         self._binary_sensor_coordinator = BinarySensorCoordinator(self._hass, self._api)
+        self._counter_coordinator = CounterCoordinator(self._hass, self._api)
 
         self._binary_sensors = [BinarySensor(self._binary_sensor_coordinator, i, self._device) for i in range(1, self.DIGITAL_INPUT_NUMBERS + 1)]
+        self._counters = [Counter(self._counter_coordinator, i, self._device) for i in range(1, self.COUNTER_NUMBERS + 1)]
         self._switches = [Switch(self._switch_coordinator, i, self._device, self._api) for i in range(1, self.OUTPUT_NUMBERS + 1)]
         self._sensors = [Sensor(self._sensor_coordinator, i, self._device) for i in range(1, self.ANALOG_INPUT_NUMBERS + 1)]
 
@@ -51,6 +54,7 @@ class IPX800v3:
         await self._switch_coordinator.async_config_entry_first_refresh()
         await self._sensor_coordinator.async_config_entry_first_refresh()
         await self._binary_sensor_coordinator.async_config_entry_first_refresh()
+        await self._counter_coordinator.async_config_entry_first_refresh()
 
     def get_switches(self) -> list[Switch]:
         return self._switches
@@ -60,6 +64,9 @@ class IPX800v3:
 
     def get_sensors(self) -> list[Sensor]:
         return self._sensors
+
+    def get_counters(self) -> list[Counter]:
+        return self._counters
 
     def _get_url(self):
         return "http://" + self._host
