@@ -1,6 +1,6 @@
 {
   "domain": "ipx800v3",
-  "name": "IPX800v3",
+  "name": "GCE IPX800 V3",
   "version": "1.0",
   "codeowners": ["@remialban"],
   "integration_type": "hub",
