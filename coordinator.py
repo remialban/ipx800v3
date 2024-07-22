@@ -35,26 +35,27 @@ class AnalogInputCoordinator(DataUpdateCoordinator):
         return values
 
 
-class RelayCoordinator(DataUpdateCoordinator):
+class CounterCoordinator(DataUpdateCoordinator):
     def __init__(self, hass: HomeAssistant, api: Api, update_interval: int):
         super().__init__(
             hass=hass,
             logger=logging.getLogger(__name__),
-            name="Switch coordinator",
+            name="Sensor coordinator",
             update_interval=timedelta(seconds=update_interval),
             always_update=True
         )
         self._api = api
 
+
     async def _async_update_data(self):
-        response: Response = await self._api.call_api("api/xdevices.json?cmd=20")
+        response: Response = await self._api.call_api("api/xdevices.json?cmd=40")
         data = response.json()
 
-        values: list[bool | None] = []
-        for i in range(1, NUMBER_OF_RELAYS + 1):
-            key = "OUT" + str(i)
+        values: list[int | None] = []
+        for i in range(1, NUMBER_OF_COUNTERS + 1):
+            key = "C" + str(i)
             if key in data.keys():
-                values.append(int(data[key]) == 1)
+                values.append(int(data[key]))
             else:
                 values.append(None)
 
@@ -87,26 +88,26 @@ class DigitalInputCoordinator(DataUpdateCoordinator):
         return values
 
 
-class CounterCoordinator(DataUpdateCoordinator):
+class RelayCoordinator(DataUpdateCoordinator):
     def __init__(self, hass: HomeAssistant, api: Api, update_interval: int):
         super().__init__(
             hass=hass,
             logger=logging.getLogger(__name__),
-            name="Sensor coordinator",
+            name="Switch coordinator",
             update_interval=timedelta(seconds=update_interval),
             always_update=True
         )
         self._api = api
 
     async def _async_update_data(self):
-        response: Response = await self._api.call_api("api/xdevices.json?cmd=40")
+        response: Response = await self._api.call_api("api/xdevices.json?cmd=20")
         data = response.json()
 
-        values: list[int | None] = []
-        for i in range(1, NUMBER_OF_COUNTERS + 1):
-            key = "C" + str(i)
+        values: list[bool | None] = []
+        for i in range(1, NUMBER_OF_RELAYS + 1):
+            key = "OUT" + str(i)
             if key in data.keys():
-                values.append(int(data[key]))
+                values.append(int(data[key]) == 1)
             else:
                 values.append(None)
 

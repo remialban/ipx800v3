@@ -11,8 +11,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
     from .board import IPX800v3
 
     board: IPX800v3 = hass.data[DOMAIN][entry.entry_id]
-    async_add_entities([sensor for sensor in board.get_sensors()])
     async_add_entities([counter for counter in board.get_counters()])
+    async_add_entities([sensor for sensor in board.get_sensors()])
 
 
 class AnalogInput(CoordinatorEntity, SensorEntity):

@@ -13,37 +13,6 @@ from .const import DOMAIN, CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_ANALOG_INPUTS, \
     CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_RELAYS
 
 
-class OptionFlowHandler(OptionsFlow):
-    def __init__(self, config_entry: ConfigEntry):
-        self.config_entry = config_entry
-
-    async def async_step_init(self, user_input: dict[str, Any] | None = None) -> FlowResult:
-        if user_input is not None:
-            return self.async_create_entry(data=user_input)
-
-        return self.async_show_form(
-            step_id="init",
-            data_schema=vol.Schema({
-                vol.Required(
-                    CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_ANALOG_INPUTS,
-                    default=self.config_entry.options.get(CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_ANALOG_INPUTS)
-                ): vol.All(int, vol.Range(min=5)),
-                vol.Required(
-                    CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_COUNTERS,
-                    default=self.config_entry.options.get(CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_COUNTERS)
-                ): vol.All(int, vol.Range(min=5)),
-                vol.Required(
-                    CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_DIGITAL_INPUTS,
-                    default=self.config_entry.options.get(CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_DIGITAL_INPUTS)
-                ): vol.All(int, vol.Range(min=5)),
-                vol.Required(
-                    CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_RELAYS,
-                    default=self.config_entry.options.get(CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_RELAYS)
-                ): vol.All(int, vol.Range(min=5)),
-            })
-        )
-
-
 class MyConfigFlow(ConfigFlow, domain=DOMAIN):
     VERSION = 1
     MINOR_VERSION = 2
@@ -97,3 +66,34 @@ class MyConfigFlow(ConfigFlow, domain=DOMAIN):
     @callback
     def async_get_options_flow(config_entry: ConfigEntry) -> OptionsFlow:
         return OptionFlowHandler(config_entry)
+
+
+class OptionFlowHandler(OptionsFlow):
+    def __init__(self, config_entry: ConfigEntry):
+        self.config_entry = config_entry
+
+    async def async_step_init(self, user_input: dict[str, Any] | None = None) -> FlowResult:
+        if user_input is not None:
+            return self.async_create_entry(data=user_input)
+
+        return self.async_show_form(
+            step_id="init",
+            data_schema=vol.Schema({
+                vol.Required(
+                    CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_ANALOG_INPUTS,
+                    default=self.config_entry.options.get(CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_ANALOG_INPUTS)
+                ): vol.All(int, vol.Range(min=5)),
+                vol.Required(
+                    CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_COUNTERS,
+                    default=self.config_entry.options.get(CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_COUNTERS)
+                ): vol.All(int, vol.Range(min=5)),
+                vol.Required(
+                    CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_DIGITAL_INPUTS,
+                    default=self.config_entry.options.get(CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_DIGITAL_INPUTS)
+                ): vol.All(int, vol.Range(min=5)),
+                vol.Required(
+                    CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_RELAYS,
+                    default=self.config_entry.options.get(CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_RELAYS)
+                ): vol.All(int, vol.Range(min=5)),
+            })
+        )
