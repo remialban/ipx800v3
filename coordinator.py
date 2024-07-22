@@ -4,18 +4,18 @@ import logging
 
 from .api import Api
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, _DataT
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from .const import NUMBER_OF_ANALOG_INPUTS, NUMBER_OF_RELAYS, NUMBER_OF_DIGITAL_INPUTS, \
     NUMBER_OF_COUNTERS
 
 
 class SensorCoordinator(DataUpdateCoordinator):
-    def __init__(self, hass: HomeAssistant, api: Api):
+    def __init__(self, hass: HomeAssistant, api: Api, update_interval: int):
         super().__init__(
             hass=hass,
             logger=logging.getLogger(__name__),
             name="Sensor coordinator",
-            update_interval=timedelta(seconds=10),
+            update_interval=timedelta(seconds=update_interval),
             always_update=True
         )
         self._api = api
@@ -36,12 +36,12 @@ class SensorCoordinator(DataUpdateCoordinator):
 
 
 class SwitchCoordinator(DataUpdateCoordinator):
-    def __init__(self, hass: HomeAssistant, api: Api):
+    def __init__(self, hass: HomeAssistant, api: Api, update_interval: int):
         super().__init__(
             hass=hass,
             logger=logging.getLogger(__name__),
             name="Switch coordinator",
-            update_interval=timedelta(seconds=10),
+            update_interval=timedelta(seconds=update_interval),
             always_update=True
         )
         self._api = api
@@ -62,12 +62,12 @@ class SwitchCoordinator(DataUpdateCoordinator):
 
 
 class BinarySensorCoordinator(DataUpdateCoordinator):
-    def __init__(self, hass: HomeAssistant, api: Api):
+    def __init__(self, hass: HomeAssistant, api: Api, update_interval: int):
         super().__init__(
             hass=hass,
             logger=logging.getLogger(__name__),
             name="Binary sensor coordinator",
-            update_interval=timedelta(seconds=10),
+            update_interval=timedelta(seconds=update_interval),
             always_update=True
         )
         self._api = api
@@ -88,12 +88,12 @@ class BinarySensorCoordinator(DataUpdateCoordinator):
 
 
 class CounterCoordinator(DataUpdateCoordinator):
-    def __init__(self, hass: HomeAssistant, api: Api):
+    def __init__(self, hass: HomeAssistant, api: Api, update_interval: int):
         super().__init__(
             hass=hass,
             logger=logging.getLogger(__name__),
             name="Sensor coordinator",
-            update_interval=timedelta(seconds=10),
+            update_interval=timedelta(seconds=update_interval),
             always_update=True
         )
         self._api = api

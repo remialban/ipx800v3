@@ -1,4 +1,6 @@
 import base64
+from types import MappingProxyType
+from typing import Any
 
 from aiohttp import web
 
@@ -9,7 +11,9 @@ from homeassistant.helpers.http import HomeAssistantView
 from .api import Api
 from .binary_sensor import BinarySensor
 from .const import DOMAIN, NUMBER_OF_COUNTERS, NUMBER_OF_DIGITAL_INPUTS, NUMBER_OF_RELAYS, \
-    NUMBER_OF_ANALOG_INPUTS
+    NUMBER_OF_ANALOG_INPUTS, CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_RELAYS, \
+    CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_ANALOG_INPUTS, CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_DIGITAL_INPUTS, \
+    CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_COUNTERS
 from .coordinator import SwitchCoordinator, SensorCoordinator, BinarySensorCoordinator, CounterCoordinator
 from .sensor import Sensor, Counter
 from .switch import Switch
@@ -19,6 +23,7 @@ class IPX800v3:
     def __init__(
             self,
             hass: HomeAssistant,
+            options: MappingProxyType[str, Any],
             host: str, username: str|None,
             password: str|None, mac: str|None,
             firmware_version: str|None
@@ -47,10 +52,10 @@ class IPX800v3:
             password=self._password
         )
 
-        self._switch_coordinator = SwitchCoordinator(self._hass, self._api)
-        self._sensor_coordinator = SensorCoordinator(self._hass, self._api)
-        self._binary_sensor_coordinator = BinarySensorCoordinator(self._hass, self._api)
-        self._counter_coordinator = CounterCoordinator(self._hass, self._api)
+        self._switch_coordinator = SwitchCoordinator(self._hass, self._api, options[CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_RELAYS])
+        self._sensor_coordinator = SensorCoordinator(self._hass, self._api, options[CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_ANALOG_INPUTS])
+        self._binary_sensor_coordinator = BinarySensorCoordinator(self._hass, self._api, options[CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_DIGITAL_INPUTS])
+        self._counter_coordinator = CounterCoordinator(self._hass, self._api, options[CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_COUNTERS])
 
         self._binary_sensors = [BinarySensor(self._binary_sensor_coordinator, i, self._device) for i in range(1, NUMBER_OF_DIGITAL_INPUTS + 1)]
         self._counters = [Counter(self._counter_coordinator, i, self._device) for i in range(1, NUMBER_OF_COUNTERS + 1)]

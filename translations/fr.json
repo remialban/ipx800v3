@@ -2,24 +2,33 @@
   "config": {
     "step": {
       "user": {
-        "title": "Ajouter un appareil",
+        "title": "Add a device",
         "data": {
-          "host": "Nom d'hôte ou adresse IP",
-          "username": "Nom d'utilisateur",
-          "password": "Mot de passe"
-        },
-        "error": {
-          "abc": "Il y a une erreur !!!!!!"
+          "host": "Host or IP address",
+          "username": "Username",
+          "password": "Password"
         }
       }
     },
     "abort": {
-      "connection_impossible": "Impossible de communiquer avec l'IPX800v3. Vérifiez que la carte est bien allumée et que les informations sont correctes"
+      "connection_impossible": "Impossible de communiquer"
     }
   },
   "exceptions": {
     "cannot_connect": {
-      "message": "Impossible de se conencter à {host}"
+      "message": "Impossible de se conencter à sss"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "interval_of_update_of_analog_inputs": "Intervalle de mise à jour des entrées analogiques",
+          "interval_of_update_of_counters": "Intervalle de mise à jour des compteurs",
+          "interval_of_update_of_digital_inputs": "Intervalle de mise à jour des entrées digitales",
+          "interval_of_update_of_relays": "Intervalle de mise à jour des relais"
+        }
+      }
     }
   }
 }
