@@ -9,7 +9,7 @@ from .const import NUMBER_OF_ANALOG_INPUTS, NUMBER_OF_RELAYS, NUMBER_OF_DIGITAL_
     NUMBER_OF_COUNTERS
 
 
-class SensorCoordinator(DataUpdateCoordinator):
+class AnalogInputCoordinator(DataUpdateCoordinator):
     def __init__(self, hass: HomeAssistant, api: Api, update_interval: int):
         super().__init__(
             hass=hass,
@@ -35,7 +35,7 @@ class SensorCoordinator(DataUpdateCoordinator):
         return values
 
 
-class SwitchCoordinator(DataUpdateCoordinator):
+class RelayCoordinator(DataUpdateCoordinator):
     def __init__(self, hass: HomeAssistant, api: Api, update_interval: int):
         super().__init__(
             hass=hass,
@@ -61,7 +61,7 @@ class SwitchCoordinator(DataUpdateCoordinator):
         return values
 
 
-class BinarySensorCoordinator(DataUpdateCoordinator):
+class DigitalInputCoordinator(DataUpdateCoordinator):
     def __init__(self, hass: HomeAssistant, api: Api, update_interval: int):
         super().__init__(
             hass=hass,

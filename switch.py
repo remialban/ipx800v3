@@ -18,7 +18,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
     async_add_entities([switch for switch in board.get_switches()])
 
 
-class Switch(CoordinatorEntity, SwitchEntity):
+class Relay(CoordinatorEntity, SwitchEntity):
     def __init__(self, coordinator: DataUpdateCoordinator, pin: int, device: DeviceInfo, api: Api):
         super().__init__(coordinator, str(pin))
         self._pin = pin

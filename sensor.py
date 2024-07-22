@@ -15,7 +15,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
     async_add_entities([counter for counter in board.get_counters()])
 
 
-class Sensor(CoordinatorEntity, SensorEntity):
+class AnalogInput(CoordinatorEntity, SensorEntity):
     def __init__(self, coordinator: DataUpdateCoordinator, pin: int, device: DeviceInfo):
         super().__init__(coordinator, pin)
         self._pin = pin

@@ -14,9 +14,9 @@ from .const import DOMAIN, NUMBER_OF_COUNTERS, NUMBER_OF_DIGITAL_INPUTS, NUMBER_
     NUMBER_OF_ANALOG_INPUTS, CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_RELAYS, \
     CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_ANALOG_INPUTS, CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_DIGITAL_INPUTS, \
     CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_COUNTERS
-from .coordinator import SwitchCoordinator, SensorCoordinator, BinarySensorCoordinator, CounterCoordinator
-from .sensor import Sensor, Counter
-from .switch import Switch
+from .coordinator import RelayCoordinator, AnalogInputCoordinator, DigitalInputCoordinator, CounterCoordinator
+from .sensor import AnalogInput, Counter
+from .switch import Relay
 
 
 class IPX800v3:
@@ -52,15 +52,15 @@ class IPX800v3:
             password=self._password
         )
 
-        self._switch_coordinator = SwitchCoordinator(self._hass, self._api, options[CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_RELAYS])
-        self._sensor_coordinator = SensorCoordinator(self._hass, self._api, options[CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_ANALOG_INPUTS])
-        self._binary_sensor_coordinator = BinarySensorCoordinator(self._hass, self._api, options[CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_DIGITAL_INPUTS])
+        self._switch_coordinator = RelayCoordinator(self._hass, self._api, options[CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_RELAYS])
+        self._sensor_coordinator = AnalogInputCoordinator(self._hass, self._api, options[CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_ANALOG_INPUTS])
+        self._binary_sensor_coordinator = DigitalInputCoordinator(self._hass, self._api, options[CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_DIGITAL_INPUTS])
         self._counter_coordinator = CounterCoordinator(self._hass, self._api, options[CONF_OPTIONS_INTERVAL_OF_UPDATE_OF_COUNTERS])
 
         self._binary_sensors = [BinarySensor(self._binary_sensor_coordinator, i, self._device) for i in range(1, NUMBER_OF_DIGITAL_INPUTS + 1)]
         self._counters = [Counter(self._counter_coordinator, i, self._device) for i in range(1, NUMBER_OF_COUNTERS + 1)]
-        self._switches = [Switch(self._switch_coordinator, i, self._device, self._api) for i in range(1, NUMBER_OF_RELAYS + 1)]
-        self._sensors = [Sensor(self._sensor_coordinator, i, self._device) for i in range(1, NUMBER_OF_ANALOG_INPUTS + 1)]
+        self._switches = [Relay(self._switch_coordinator, i, self._device, self._api) for i in range(1, NUMBER_OF_RELAYS + 1)]
+        self._sensors = [AnalogInput(self._sensor_coordinator, i, self._device) for i in range(1, NUMBER_OF_ANALOG_INPUTS + 1)]
 
     async def run_coordinators(self):
         await self._switch_coordinator.async_config_entry_first_refresh()
@@ -68,13 +68,13 @@ class IPX800v3:
         await self._binary_sensor_coordinator.async_config_entry_first_refresh()
         await self._counter_coordinator.async_config_entry_first_refresh()
 
-    def get_switches(self) -> list[Switch]:
+    def get_switches(self) -> list[Relay]:
         return self._switches
 
     def get_binary_sensors(self) -> list[BinarySensor]:
         return self._binary_sensors
 
-    def get_sensors(self) -> list[Sensor]:
+    def get_sensors(self) -> list[AnalogInput]:
         return self._sensors
 
     def get_counters(self) -> list[Counter]:
