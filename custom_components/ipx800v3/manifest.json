@@ -1,11 +1,11 @@
 {
   "domain": "ipx800v3",
   "name": "GCE IPX800 V3",
-  "version": "1.0",
-  "codeowners": ["@remialban"],
-  "integration_type": "hub",
-  "documentation": "https://github.com/remialban/ipx800v3",
   "after_dependencies": ["http"],
+  "codeowners": ["@remialban"],
+  "config_flow": true,
+  "documentation": "https://github.com/remialban/ipx800v3",
+  "integration_type": "hub",
   "iot_class": "local_polling",
-  "config_flow": true
+  "version": "1.0"
 }
