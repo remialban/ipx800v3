@@ -7,9 +7,6 @@
           "host": "Nom d'hôte ou adresse IP",
           "username": "Nom d'utilisateur",
           "password": "Mot de passe"
-        },
-        "error": {
-          "abc": "Il y a une erreur !!!!!!"
         }
       }
     },
