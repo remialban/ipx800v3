@@ -1,4 +1,4 @@
-# IPX800 V4 integration for Home-Assistant
+# IPX800 V3 integration for Home-Assistant
 
 This is a custom component to allow control of IPX800 V3 devices from within Home Assistant.
 
