@@ -6,7 +6,7 @@
   "config_flow": true,
   "documentation": "https://github.com/remialban/ipx800v3",
   "integration_type": "hub",
-  "issue_tracker": "https://github.com/remialban/ipx800v3/issues",
   "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/remialban/ipx800v3/issues",
   "version": "1.0"
 }
