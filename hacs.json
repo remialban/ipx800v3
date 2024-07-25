@@ -1,5 +1,6 @@
 {
 	"name": "GCE IPX800 V3",
 	"content_in_root": false,
+	"country": "FR",
 	"render_readme": true
 }
