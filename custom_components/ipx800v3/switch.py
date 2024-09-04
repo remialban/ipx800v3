@@ -45,5 +45,9 @@ class Relay(CoordinatorEntity, SwitchEntity):
         await self._api.call_api("preset.htm?led" + str(self._pin) + "=0")
         await self.coordinator.async_refresh()
 
+    async def async_toggle(self, **kwargs: Any):
+        await self._api.call_api("leds.cgi?led=" + str(self._pin-1))
+        await self.coordinator.async_refresh()
+
     def set_state(self, state: bool):
         self._attr_is_on = state
